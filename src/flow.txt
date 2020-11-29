@@ -1,0 +1,26 @@
+1. user enters join.
+  1.1 Fetch details.
+  1.2 Send welcome msg. 
+  1.3 Push welcome msg onto userMessage array.
+
+2.1 User chooses to pay (option 1)
+  2.1.1 send payment link.
+  2.1.2 remove user entry from array
+
+2.2 User decides to pay later(option 2)
+  2.2.1 send pay later options msg.
+  2.2.2 update the entry in user array.
+  2.2.2.3 User chooses a pay later option
+    2.2.2.3.1 Schedule cron job.
+    2.2.2.3.2 remove entry from array.
+
+3. Cron job
+  3.1 Cron job fetches details
+  3.2 Send welcome message.
+  3.3 Make entry in array.
+
+
+REQUIRED FUNCTIONS
+  1. To fetch details.
+  2. Schedule cron job.
+  
