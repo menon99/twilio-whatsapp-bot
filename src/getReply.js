@@ -23,6 +23,7 @@ const getWelcomeMsg = (amount, date) => {
 const getReply = async ({ msg, user, userMessageData }) => {
   msg = msg.toLowerCase().trim();
   if (msg === "join") {
+    remove(userMessageData, (ele) => ele.user == user);
     let { amount, due_date } = await getDetails(user.slice(12));
     console.log(`amount is ${amount} and date is ${due_date}`);
     const textBody = getWelcomeMsg(amount, due_date);
@@ -60,6 +61,7 @@ const getReply = async ({ msg, user, userMessageData }) => {
           18
         );
         let { amount, due_date } = await getDetails(user.slice(12));
+        console.log(`amount is ${amount} and date is ${due_date}`);
         setReminder(user, getWelcomeMsg(amount, due_date), tomorrow);
         let formattedDate = S(dateFormat).template({
           day: tomorrow.getDate(),
@@ -75,19 +77,20 @@ const getReply = async ({ msg, user, userMessageData }) => {
       case "2":
         //fetch last date
         //set reminder for last date
-        let { amount1, due_date1 } = await getDetails(user.slice(12));
-        const [date, month] = due_date1.split("/");
+        let details = await getDetails(user.slice(12));
+        console.log(`amount is ${details.amount} and duedate1 is ${details.due_date}`);
+        const [date, month, year] = details.due_date.split("/");
         setReminder(
           user,
-          getWelcomeMsg(amount1, due_date1),
-          new Date(2020, +month - 1, +date, 18)
+          getWelcomeMsg(details.amount, details.due_date),
+          new Date(+year, +month - 1, +date, 18)
         );
         remove(userMessageData, (ele) => ele.user == user);
         userMessageData.push({
           user,
-          msg: getWelcomeMsg(amount1, due_date1),
+          msg: getWelcomeMsg(details.amount, details.due_date),
         });
-        textBody = S(REMINDER_SET).template({ reminder: due_date1 }).s;
+        textBody = S(REMINDER_SET).template({ reminder: details.due_date }).s;
         break;
       case "3":
         textBody = CUSTOM_TIME;

@@ -2,3 +2,4 @@
 ngrok
 /test
 *.env
+.vscode/

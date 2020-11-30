@@ -1,7 +1,8 @@
 const Agenda = require("agenda");
 const sendNotification = require("./sendNotification");
 
-const mongoConnectionString = "mongodb://127.0.0.1/agenda";
+const mongoConnectionString =
+  process.env.MONGODB_URL || "mongodb://127.0.0.1/agenda";
 const EVENT = "send reminder";
 
 const agenda = new Agenda({
