@@ -20,11 +20,6 @@ const getDetails = async (phone) => {
   return new Promise((resolve) => resolve(data.data));
 };
 
-// const PHONE_NUMBER = "8054921837";
-
-// getPaymentURL(PHONE_NUMBER);
-// getDetails(PHONE_NUMBER);
-
 module.exports = {
   getDetails,
   getPaymentURL,

@@ -13,11 +13,15 @@ const {
 const { getDetails, getPaymentURL } = require("./getData");
 
 const getWelcomeMsg = (amount, date) => {
-  return S(WELCOME).template({
-    organization: "HyperVerge",
-    amount,
-    date,
-  }).s;
+  return (
+    S(WELCOME).template({
+      organization: "HyperVerge",
+      amount,
+      date,
+    }).s +
+    "\n" +
+    REPLY_BACK
+  );
 };
 
 const getReply = async ({ msg, user, userMessageData }) => {
@@ -25,7 +29,6 @@ const getReply = async ({ msg, user, userMessageData }) => {
   if (msg === "join") {
     remove(userMessageData, (ele) => ele.user == user);
     let { amount, due_date } = await getDetails(user.slice(12));
-    console.log(`amount is ${amount} and date is ${due_date}`);
     const textBody = getWelcomeMsg(amount, due_date);
     userMessageData.push({ user, msg: textBody });
     return textBody;
@@ -33,7 +36,6 @@ const getReply = async ({ msg, user, userMessageData }) => {
 
   const prevMsgIndex = userMessageData.findIndex((ele) => ele.user === user);
   if (prevMsgIndex == -1) return "Sorry try again!";
-  //console.log(`prev index is ${prevMsgIndex}`);
 
   const prevMsg = userMessageData[prevMsgIndex].msg.toLowerCase();
   let textBody;
@@ -61,7 +63,6 @@ const getReply = async ({ msg, user, userMessageData }) => {
           18
         );
         let { amount, due_date } = await getDetails(user.slice(12));
-        console.log(`amount is ${amount} and date is ${due_date}`);
         setReminder(user, getWelcomeMsg(amount, due_date), tomorrow);
         let formattedDate = S(dateFormat).template({
           day: tomorrow.getDate(),
@@ -78,7 +79,6 @@ const getReply = async ({ msg, user, userMessageData }) => {
         //fetch last date
         //set reminder for last date
         let details = await getDetails(user.slice(12));
-        console.log(`amount is ${details.amount} and duedate1 is ${details.due_date}`);
         const [date, month, year] = details.due_date.split("/");
         setReminder(
           user,

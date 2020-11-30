@@ -13,13 +13,8 @@ app.get("/", (req, res) => {
 const userMessageData = [];
 
 app.post("/incoming", async (req, res) => {
-  // console.log(`body is`, req.body);
-  // console.log(req.body.Body);
-
   const msg = req.body.Body;
   const user = req.body.From.trim();
-
-  //console.log(`user is ${user}`);
 
   const reply = await getReply({ msg, user, userMessageData });
   console.log(`reply is ${reply}`);
